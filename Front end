@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>历史记录计算器</title>
+  <style>
+    .container {
+      width: 300px;
+      margin: 0 auto;
+    }
+    .result {
+      margin-bottom: 10px;
+    }
+    .history {
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>历史记录计算器</h1>
+    <div class="result">
+      <input type="text" id="result" readonly>
+    </div>
+    <table>
+      <tr>
+        <td><button onclick="appendNumber(7)">7</button></td>
+        <td><button onclick="appendNumber(8)">8</button></td>
+        <td><button onclick="appendNumber(9)">9</button></td>
+        <td><button onclick="appendOperator('+')">+</button></td>
+      </tr>
+      <tr>
+        <td><button onclick="appendNumber(4)">4</button></td>
+        <td><button onclick="appendNumber(5)">5</button></td>
+        <td><button onclick="appendNumber(6)">6</button></td>
+        <td><button onclick="appendOperator('-')">-</button></td>
+      </tr>
+      <tr>
+        <td><button onclick="appendNumber(1)">1</button></td>
+        <td><button onclick="appendNumber(2)">2</button></td>
+        <td><button onclick="appendNumber(3)">3</button></td>
+        <td><button onclick="appendOperator('*')">*</button></td>
+      </tr>
+      <tr>
+        <td><button onclick="appendNumber(0)">0</button></td>
+        <td><button onclick="appendOperator('.')">.</button></td>
+        <td><button onclick="calculate()">=</button></td>
+        <td><button onclick="appendOperator('/')">/</button></td>
+        <td><button onclick="appendOperator('%')">%</button></td>
+      </tr>
+      <tr>
+        <td><button onclick="calculateMod()">%</button></td>
+        <td><button onclick="clearResult()">C</button></td>
+      </tr>
+    </table>
+    <div class="history">
+      <h3>历史记录</h3>
+      <ul id="historyList"></ul>
+    </div>
+  </div>
+
+  <script>
+    let currentExpression = '';
+    let historyList = [];
+
+    function appendNumber(number) {
+      currentExpression += number;
+      document.getElementById('result').value = currentExpression;
+    }
+
+    function appendOperator(operator) {
+      currentExpression += operator;
+      document.getElementById('result').value = currentExpression;
+    }
+
+    function calculate() {
+      const result = eval(currentExpression);
+      document.getElementById('result').value = result;
+      historyList.push(currentExpression + ' = ' + result);
+      updateHistoryList();
+      currentExpression = '';
+    }
+
+    function calculateMod() {
+      const result = eval(currentExpression);
+      const modResult = result % 2; // 假设除以2
+      document.getElementById('result').value = modResult;
+      historyList.push(currentExpression + ' % 2 = ' + modResult);
+      updateHistoryList();
+      currentExpression = '';
+    }
+
+    function clearResult() {
+      currentExpression = '';
+      document.getElementById('result').value = '';
+    }
+
+    function updateHistoryList() {
+      const historyListElement = document.getElementById('historyList');
+      historyListElement.innerHTML = '';
+      for (let i = 0; i < historyList.length; i++) {
+        const li = document.createElement('li');
+        li.textContent = historyList[i];
+        historyListElement.appendChild(li);
+      }
+    }
+  </script>
+</body>
+</html>
